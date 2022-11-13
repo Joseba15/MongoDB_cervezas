@@ -1,11 +1,14 @@
-const { connect } = require('diskdb');
+//const { connect } = require('diskdb');
 const express = require('express');
 const { dbConnection } = require('./database/config');
 require('dotenv').config();
 
 const app = express()
-// require('./db')
+
 const cervezas = require('./routes/cervezas')
+const bares = require('./routes/bares')
+const usuario = require('./routes/usuario')
+
 
 // DATABASE CONNECTION
 async function connectAtlas(){
@@ -17,6 +20,8 @@ app.use(express.json())
 
 //ROUTES
 app.use('/cervezas', cervezas)
+app.use('/bares', bares)
+app.use('/usuarios', usuario)
 
 
 
