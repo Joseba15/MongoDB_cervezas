@@ -1,7 +1,7 @@
 const db = require('../models/db')
 const { response, request } = require('express');
 const Users = require('../models/users');
-const users = require('../models/users');
+const bcryiptjs = require(bcryiptjs);
 
 
 
@@ -35,9 +35,22 @@ async function addUser(req = request, res = response) {
     // const beer = req.body
     // const inserted = db.cervezas.save(beer)
     // res.json(inserted)
+    
+    
     const { Nombre, Apellidos, Nick, Email, Contraseña, Fecha_de_creacion} = req.body;
-    const users = new Users({ Nombre, Apellidos, Nick, Email, Contraseña, Fecha_de_creacion});
+    
+    const isEmailExist = await users.find({Email})
+    if(isEmailExist.length){
+        return res.status(400).json({
+            "msg": "Email alredy exists "
 
+        })
+    }
+
+    const users = new Users({ Nombre, Apellidos, Nick, Email, Contraseña, Fecha_de_creacion});
+    
+    const salt = bcryiptjs.genSaltSync;
+    users.Contraseña = bcryptjs.hashSync( Contraseña, salt );
 
     // Guardar en BD
     await users.save();
